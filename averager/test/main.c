@@ -5,9 +5,8 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include "lamda_ave.h"
 #include "fixedpoint.h"
-#include "assert.h"
+#include "lamda_ave.h"
 
 void main(void)
 {

@@ -8,11 +8,15 @@ project(${modulename})
 set(CMAKE_BUILD_TYPE Debug)
 
 set(sourcefiles
-    ${CMAKE_CURRENT_LIST_DIR}/fixedpoint.c
+    ${CMAKE_CURRENT_LIST_DIR}/lamda_ave.c
 )
 
 add_library(${modulename}
     ${sourcefiles}
+)
+
+target_link_libraries(${modulename}
+    fixedpoint
 )
 
 target_include_directories(${modulename}

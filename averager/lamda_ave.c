@@ -13,8 +13,8 @@
  */
 
 #include <stdint.h>
-#include "lamda_ave.h"
 #include "fixedpoint.h"
+#include "lamda_ave.h"
 
 lamda_average_t calcAverage(lamda_average_t prevAverage, lamda_average_t newValue)
 {
