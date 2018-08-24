@@ -6,8 +6,6 @@
 #ifndef __FIXEDPOINT_H__
 #define __FIXEDPOINT_H__
 
-#include <stdint.h>
-
 // Q<integer>.<fractional>
 // where integer = 32-fractional
 // integer resolution is 2^<integer>-1 or 2^(integer-1)-1 for signed
@@ -16,17 +14,15 @@
 // and a fractional resolution of 1/2^(8) or 0.00390625
 
 // stored as one 32-bit number
-#define FIXEDPOINT_I    8
+#define FIXEDPOINT_SIZE 32
 #define FIXEDPOINT_Q    8
-typedef struct _fixedPoint_t_
+#define FIXEDPOINT_I    (FIXEDPOINT_SIZE - FIXEDPOINT_Q)
+typedef union _fixedPoint_t_
 {
-    union
+    struct
     {
-        int32_t integer     :FIXEDPOINT_I;
-        int32_t fraction    :FIXEDPOINT_Q;
-#if (FIXEDPOINT_I + FIXEDPOINT_Q != 32)
-        int32_t rsvd        :(32-FIXEDPOINT_I-FIXEDPOINT_Q);
-#endif
+        uint32_t fraction   : FIXEDPOINT_Q;
+        int32_t integer     : FIXEDPOINT_I;
     };
     uint32_t all;
 } fixedPoint_t;
