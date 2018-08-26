@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include "fixedpoint.h"
 
-void main(void)
+int main(void)
 {
     fixedPoint_t a;
     a.all = 3160; // I = 3160 >> 8, Q = (3160 && 0xFF)/2^Q => I = 12, Q = 88/(2^Q) = 0.34375 => I + Q = 12.375
@@ -40,5 +40,5 @@ void main(void)
     printf("INT32_MAX: %i\n", INT32_MAX);
     printf("INT32_MIN: %i\n", INT32_MIN);
 
-    return;
+    return 0; // Ctest uses return 0 for pass
 }

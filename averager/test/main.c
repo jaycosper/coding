@@ -8,7 +8,7 @@
 #include "fixedpoint.h"
 #include "lamda_ave.h"
 
-void main(void)
+int main(void)
 {
     lamda_average_t ave;
     lamda_average_t input;
@@ -21,5 +21,5 @@ void main(void)
 
     printf("new average 0x%X\n", ave.all);
 
-    return;
+    return 0; // Ctest uses return 0 for pass
 }
