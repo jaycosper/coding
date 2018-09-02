@@ -7,19 +7,28 @@
 #include <stdio.h>
 #include "fixedpoint.h"
 #include "lamda_ave.h"
+#include "assert.h"
 
 int main(void)
 {
     lamda_average_t ave;
     lamda_average_t input;
 
+    char const* const fileName = "/mnt/c/Users/jay/Google Drive/Projects/coding/averager/test/input.txt";
+    FILE* fptr = fopen(fileName, "r"); /* should check the result */
+    ASSERT(fptr != NULL);
+    int inputValue;
+
     ave.all = 0;
-    input.all = 0x8000;
 
-    printf("previous average 0x%X\n", ave.all);
-    ave = calcAverage(ave, input);
+    while (fscanf(fptr,"%d", &inputValue) != 0) {
+        // loops until non-integer line scanned
+        input.all = inputValue;
+        ave = calcAverage(ave, input);
+        printf("%d\n", ave.all);
+    }
 
-    printf("new average 0x%X\n", ave.all);
+    fclose(fptr);
 
     return 0; // Ctest uses return 0 for pass
 }
