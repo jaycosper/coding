@@ -33,6 +33,8 @@ int main(void)
     b.num = 128; b.shift = 8; // 128/(2^8) = 0.5
     result = ffpn_mult(a, b); // target value = 6.1725
     printf("product: %i.%i\n", result.num, result.shift);
+    result = ffpn_div(four, oneFourth); // target value = 16
+    printf("divide: %i.%i\n", result.num, result.shift);
 
     return 0; // Ctest uses return 0 for pass
 }

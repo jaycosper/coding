@@ -18,7 +18,6 @@
 
 lamda_average_t calcAverage(lamda_average_t prevAverage, lamda_average_t newValue)
 {
-    uint32_t status = 0;
     lamda_average_t temp;
     lamda_average_t y_shifted;
     lamda_average_t x_shifted;
