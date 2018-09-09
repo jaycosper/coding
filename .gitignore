@@ -1,4 +1,4 @@
 *.exe
 *.gch
 
-*/build
+*build
