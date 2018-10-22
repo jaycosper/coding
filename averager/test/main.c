@@ -14,7 +14,8 @@ int main(void)
     lamda_average_t ave;
     lamda_average_t input;
 
-    char const* const fileName = "/mnt/c/Users/jay/Google Drive/Projects/coding/averager/test/input.txt";
+    // char const* const fileName = "/mnt/c/Users/jay/Google Drive/Projects/coding/averager/test/input.txt";
+    char const* const fileName = "/home/jay/Projects/coding/averager/test/input.txt";
     FILE* fptr = fopen(fileName, "r"); /* should check the result */
     ASSERT(fptr != NULL);
     int inputValue;

@@ -7,7 +7,7 @@ project(${modulename})
 set(CMAKE_BUILD_TYPE Debug)
 
 set(sourcefiles
-    ${CMAKE_CURRENT_LIST_DIR}/cutest.c
+    ${CMAKE_CURRENT_LIST_DIR}/CuTest.c
 )
 
 add_library(${modulename}
