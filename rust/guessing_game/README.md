@@ -10,7 +10,16 @@ rand
 - x86
 ## Usage
 ```
+// Build and run default (debug) app
 $ cargo run
+// Build and run release app
+$ cargo run --release
+// Build default app binary
+$ cargo build
+// Build (compile) default app without binary
+$ cargo check
+// Build and open default app documentation (located in ./target/doc/<app>/index.html)
+$ cargo doc --open
 ```
 ## Details
 ### Sample Output
@@ -29,9 +38,7 @@ Please input your guess.
 You guessed: 75
 Too big!
 Please input your guess.
-65
-You guessed: 65
-To small!
+not-a-number
 Please input your guess.
 68
 You guessed: 68

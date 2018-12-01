@@ -2,3 +2,5 @@
 *.gch
 
 *build
+
+.vscode
