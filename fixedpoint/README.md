@@ -32,6 +32,7 @@ None
 - x86
 ## Usage
 ```C
+** Not complete **
 int someCall(int * alpha)
 {
     ASSERT(alpha != NULL);

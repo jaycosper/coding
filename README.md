@@ -6,7 +6,7 @@ General coding techniques and algorithms for C and other languages, targeting va
 ## Build Process
 This process was designed with a Linux-based flow in mind. It uses CMake to create the build environment. Testing is done through CTest and CuTest.
 
-Most of these examples were built and tested using Ubuntu on Windows.
+Most of these examples were built and tested using Ubuntu.
 ```bash
 ~$ git clone <repo>
 ~$ cd coding
