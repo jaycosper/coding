@@ -12,7 +12,7 @@ Most of these examples were built and tested using Ubuntu.
 ~$ cd coding
 ~$ mkdir build
 ~$ cd build
-~$ cmake -DCMAKE_TOOLCHAIN_FILE=clang-toolchain.cmake ..
+~$ cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=clang-toolchain.cmake ..
 ~$ make
 ~$ ctest
 ```

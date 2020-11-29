@@ -1,11 +1,18 @@
 /*
-  Auto H20 - auto watering system to Christmas trees
+  Auto H20 - auto watering system for Christmas trees
   Jay Cosper
   20191214
 */
+#define WATER_LEVEL_SENSORS 2
+#define LOWER_WATER_SENSOR 0
+#define UPPER_WATER_SENSOR 1
 
 /* Pin definitions */
-const int waterLevelPin = 0;
+// These just happen to be the same as the index
+#define LOWER_SENSOR_PIN 0
+#define UPPER_SENSOR_PIN 1
+
+const int waterLevelPin[WATER_LEVEL_SENSORS] = {LOWER_SENSOR_PIN, UPPER_SENSOR_PIN};
 const int faultPin =  3;
 const int sourceLowLedPin =  4;
 const int sourceLowDetectPin =  5;
@@ -18,8 +25,7 @@ const int PUMP_ON = 1;
 const int PUMP_OFF = 0;
 const int SENSOR_CHECK_RATE = 1000; /* main loop rate in ms */
 const int PUMP_TIMEOUT_VALUE = 30; /* max time in SENSOR_CHECK_RATE units pump can be on */
-const int WATER_LEVEL_LOW_VALUE = 150;
-const int WATER_LEVEL_HIGH_VALUE = 170;
+const int WATER_LEVEL_SWITCHPOINT = 512;
 
 /* global variables */
 int pumpState;
@@ -31,7 +37,7 @@ void faultState(void);
 // the setup routine runs once when you press reset:
 void setup() {
   // initialize serial communication at 9600 bits per second:
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // initialize pin direction
   pinMode(faultPin, OUTPUT);
@@ -50,7 +56,8 @@ void setup() {
 // the loop routine runs over and over again forever:
 void loop() {
 
-  int waterLevel;
+  int waterLevel[WATER_LEVEL_SENSORS];
+  bool bWaterLevelSw[WATER_LEVEL_SENSORS];
   int sourceLowDetect;
 
   Serial.println("Entering main loop");
@@ -86,26 +93,54 @@ void loop() {
   {
 
     /* read the analog water sensor */
-    waterLevel = analogRead(waterLevelPin);
+    waterLevel[LOWER_WATER_SENSOR]= analogRead(waterLevelPin[LOWER_SENSOR_PIN]);
+    waterLevel[UPPER_WATER_SENSOR]= analogRead(waterLevelPin[UPPER_SENSOR_PIN]);
+    /* translate to binary */
+    /* Active (blocked) sensor is pulled high */
+    for (int i = 0; i < WATER_LEVEL_SENSORS; i++)
+    {
+      bWaterLevelSw[i] = true;
+      if (waterLevel[i] <= WATER_LEVEL_SWITCHPOINT)
+      {
+        bWaterLevelSw[i] = false;
+      }
+    }
 
     /* if pump is ON, check against HIGH level */
-    Serial.print("waterLevel: ");
-    Serial.println(waterLevel);
+    Serial.print("waterLevel: S0 ");
+    Serial.print(waterLevel[LOWER_WATER_SENSOR]);
+    Serial.print(" S1 ");
+    Serial.println(waterLevel[UPPER_WATER_SENSOR]);
     Serial.print("pumpState: ");
     Serial.println(pumpState);
-    if (waterLevel <= WATER_LEVEL_LOW_VALUE)
-    {
+
+    /* Pump Case */
+    if (!bWaterLevelSw[LOWER_WATER_SENSOR] && !bWaterLevelSw[UPPER_WATER_SENSOR]) {
+      // neither switch active/blocked
+      // empty, enable pump
       pumpState = PUMP_ON;
-    }
-    /* if pump is OFF, check against LOW level */
-    else if (waterLevel >= WATER_LEVEL_HIGH_VALUE)
-    {
+    } else if (bWaterLevelSw[LOWER_WATER_SENSOR] && !bWaterLevelSw[UPPER_WATER_SENSOR]) {
+      // lower active/blocked, upper not active/blocked
+      // normal water level, do nothing...
+    } else if (!bWaterLevelSw[LOWER_WATER_SENSOR] && bWaterLevelSw[UPPER_WATER_SENSOR]) {
+      // fault case
+      // lower not active/blocked, upper active/blocked
+      Serial.print("invalid sensor fault: S0 ");
+      Serial.print(waterLevel[LOWER_WATER_SENSOR]);
+      Serial.print(" S1 ");
+      Serial.println(waterLevel[UPPER_WATER_SENSOR]);
+      faultState();
+    } else if (bWaterLevelSw[LOWER_WATER_SENSOR] && bWaterLevelSw[UPPER_WATER_SENSOR]) {
+      // both switches active/blocked
+      // full, shut off pump
       pumpState = PUMP_OFF;
-    }
-    else
-    {
-      Serial.print("waterLevel midrange: ");
-      Serial.println(waterLevel);
+    } else {
+      // fault case -- should never see this
+      Serial.print("impossible sensor fault: S0 ");
+      Serial.print(waterLevel[LOWER_WATER_SENSOR]);
+      Serial.print(" S1 ");
+      Serial.println(waterLevel[UPPER_WATER_SENSOR]);
+      faultState();
     }
 
     /* set the pump state */
@@ -119,19 +154,30 @@ void loop() {
     faultState();
   }
 
-
-  /* delay between main loop runs */
+  /*
+   * 3. delay between main loop runs
+   */
   delay(SENSOR_CHECK_RATE);
 }
 
 void faultState(void)
 {
+  int waterLevel[WATER_LEVEL_SENSORS];
   Serial.print("FAULT: pumpState ");
   Serial.print(pumpState);
   Serial.print(" pumpTimeout: ");
   Serial.println(pumpTimeout);
-  pumpState = PUMP_OFF;
   digitalWrite(faultPin, LED_ON);
-  digitalWrite(pumpCtrl, pumpState);
-  while(1); /* trap -- wait for reset */
+  digitalWrite(pumpCtrl, PUMP_OFF);
+  while(1)
+  {
+    /* trap -- wait for reset */
+    delay(SENSOR_CHECK_RATE);
+    waterLevel[LOWER_WATER_SENSOR]= analogRead(waterLevelPin[LOWER_SENSOR_PIN]);
+    waterLevel[UPPER_WATER_SENSOR]= analogRead(waterLevelPin[UPPER_SENSOR_PIN]);
+    Serial.print("waterLevel: S0 ");
+    Serial.print(waterLevel[LOWER_WATER_SENSOR]);
+    Serial.print(" S1 ");
+    Serial.println(waterLevel[UPPER_WATER_SENSOR]);
+  }
 }
