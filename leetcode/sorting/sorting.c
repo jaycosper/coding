@@ -338,8 +338,6 @@ int main(void)
     int arr_size = sizeof(arr)/sizeof(arr[0]);
     int arr_size_bytes = arr_size*sizeof(int);
     working_array = malloc(arr_size_bytes);
-    clock_t start, end;
-    double cpu_time_used;
 
     printf("BUBBLE SORT\n");
     memcpy(working_array, arr, arr_size_bytes);
@@ -359,12 +357,12 @@ int main(void)
     printf("QUICK SORT\n");
     memcpy(working_array, arr, arr_size_bytes);
     rfunc_ptr = &quickSort;
-    runRecursiveSortFunc(rfunc_ptr, working_array, 0, arr_size-1);
+    runRecursiveSortFunc(rfunc_ptr, working_array, 0, arr_size);
 
     printf("MERGE SORT\n");
     memcpy(working_array, arr, arr_size_bytes);
     rfunc_ptr = &mergeSort;
-    runRecursiveSortFunc(rfunc_ptr, working_array, 0, arr_size-1);
+    runRecursiveSortFunc(rfunc_ptr, working_array, 0, arr_size);
 
     return 0;
 }

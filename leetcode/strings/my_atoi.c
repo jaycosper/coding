@@ -123,7 +123,7 @@ int myAtoi(char * s)
 #include <stdio.h>
 #include <string.h>
 
-#define NUM_TESTS 12
+#define NUM_TESTS 13
 #define MAX_NUM_VALUES 20
 char testcase[NUM_TESTS][MAX_NUM_VALUES] = {
     "42",
@@ -137,6 +137,7 @@ char testcase[NUM_TESTS][MAX_NUM_VALUES] = {
     "  abc  def ",
     "",
     "      ",
+    "     +",
 };
 
 int testanswers[NUM_TESTS] = {
@@ -148,6 +149,7 @@ int testanswers[NUM_TESTS] = {
     47,
     2,
     4321,
+    0,
     0,
     0,
     0,
