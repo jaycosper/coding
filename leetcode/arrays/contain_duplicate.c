@@ -34,7 +34,10 @@ bool containsDuplicate(int* nums, int numsSize){
             // duplicate
             return true;
         }
-        hash[*nums++] = true;
+        // set flag for this integer
+        hash[*nums]= true;
+        // step to next index
+        nums++;
     }
     return false;
 }
@@ -70,7 +73,7 @@ int main(void)
     for (int i=0; i<NUM_TESTS; i++)
     {
         result = containsDuplicate(testcase[i], testnum[i]);
-        printf("Test #%d containsDuplicate\n", i);
+        printf("Test #%d array does %scontain duplicate(s)\n", i, (result)?"":"not ");
         if (result != testanswers[i])
         {
             status = -1;

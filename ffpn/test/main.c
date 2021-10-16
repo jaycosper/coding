@@ -1,7 +1,7 @@
 /*
  * Fake Floating Point Numbers
  * Implementation and test
- * 
+ *
  */
 
 #include <stdio.h>
@@ -32,9 +32,9 @@ int main(void)
     a.num = 1656917852; a.shift = 27; // 1656917852/(2^27) = 12.345
     b.num = 128; b.shift = 8; // 128/(2^8) = 0.5
     result = ffpn_mult(a, b); // target value = 6.1725
-    printf("product: %i.%i\n", result.num, result.shift);
+    printf("product: %i.%i = %f\n", result.num, result.shift, ((float)result.num/(1<<result.shift)));
     result = ffpn_div(four, oneFourth); // target value = 16
-    printf("divide: %i.%i\n", result.num, result.shift);
+    printf("divide: %i.%i = %f\n", result.num, result.shift, ((float)result.num/(1<<result.shift)));
 
     return 0; // Ctest uses return 0 for pass
 }

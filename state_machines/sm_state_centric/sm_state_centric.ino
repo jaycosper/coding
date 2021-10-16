@@ -66,7 +66,6 @@ void initLEDs(void)
 void initButtons(void)
 {
   pinMode(GO_BUTTON_PIN, INPUT);
-  pinMode(STOP_BUTTON_PIN, INPUT);
 }
 
 void setup()
@@ -109,7 +108,6 @@ void isrTimerTick(void)
   gCtx.bGoButtonDelay = gCtx.bGoButton;
   gCtx.bStopButtonDelay = gCtx.bStopButton;
   gCtx.bGoButton = readButton(BUTTON_GO);
-  gCtx.bStopButton = readButton(BUTTON_STOP);
 
   if (gCtx.bGoButton == gCtx.bGoButtonDelay)
   {

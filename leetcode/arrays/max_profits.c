@@ -47,9 +47,10 @@ int maxProfit(int* prices, int pricesSize){
     {
         if (bSellFlag == false)
         {
+            // looking to buy
             if (prices[i]<priceValley)
             {
-                // looking to buy
+                // prices still dropping...
                 priceValley = prices[i];
             }
             else
@@ -65,7 +66,7 @@ int maxProfit(int* prices, int pricesSize){
             // looking to sell...
             if (prices[i]>pricePeak)
             {
-                // still going up...
+                // prices still going up...
                 pricePeak = prices[i];
             }
             else
@@ -93,13 +94,17 @@ int maxProfit(int* prices, int pricesSize){
 
 int maxProfit(int* prices, int pricesSize);
 
-#define NUM_TESTS 4
+#define NUM_TESTS 8
 #define MAX_NUM_VALUES 10
 int testcase[NUM_TESTS][MAX_NUM_VALUES] = {
     {7,3,1,5,3,6,4},
     {1,2,3,4,5},
     {5,4,3,2,1},
     {1,2,1,2,1,2,1,2,1,2},
+    {1,2,2,2,2},
+    {1,2,2,3,3},
+    {1,2,2,3,3,2},
+    {1,2,2,3},
 };
 
 int testnum[NUM_TESTS] = {
@@ -107,6 +112,10 @@ int testnum[NUM_TESTS] = {
     5,
     5,
     10,
+    5,
+    5,
+    6,
+    4,
 };
 
 int testanswers[NUM_TESTS] = {
@@ -114,6 +123,10 @@ int testanswers[NUM_TESTS] = {
     4, // 1/5=4 == 4
     0, // none
     5, // 1/2=1 * 5 == 5
+    1, // 2-1 = 1 force sell??
+    2, // 3-1 = 2 force sell??
+    2, // 3-1 = 2 force sell??
+    2, // 3-1 = 2 force sell??
 };
 
 int main(void)
