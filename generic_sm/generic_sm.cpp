@@ -92,12 +92,21 @@ int generic_event(generic_sm_t &sm)
 {
     std::cout << __func__ << std::endl;
 
-    if (sm.eventBitmap & (1<<eventA))
+    if (sm.pendingEventBitmap & (1<<eventA) & ~(sm.maskedEventBitmap))
+    {
         sm.nextState = eventTable[sm.currentState].eventANextState;
-    else if (sm.eventBitmap & (1<<eventB))
-        sm.nextState = eventTable[sm.currentState].eventANextState;
+        clearEvent(sm, eventA, false);
+    }
+    else if (sm.pendingEventBitmap & (1<<eventB) & ~(sm.maskedEventBitmap))
+    {
+        sm.nextState = eventTable[sm.currentState].eventBNextState;
+        clearEvent(sm, eventB, false);
+    }
     else
+    {
+        // no event
         sm.nextState = eventTable[sm.currentState].noEventNextState;
+    }
 
     return 0;
 }
@@ -138,14 +147,16 @@ constexpr state_table_t stateTable[max_states]
 int handlerEventA(generic_sm_t &sm)
 {
     // set bitmap for this event
-    sm.eventBitmap |= (1<<eventA);
+    sm.pendingEventBitmap |= (1<<eventA);
+    std::cout << __func__ << ": " << sm.pendingEventBitmap << std::endl;
     return 0;
 }
 
 int handlerEventB(generic_sm_t &sm)
 {
     // set bitmap for this event
-    sm.eventBitmap |= (1<<eventB);
+    sm.pendingEventBitmap |= (1<<eventB);
+    std::cout << __func__ << ": " << sm.pendingEventBitmap << std::endl;
     return 0;
 }
 
@@ -153,12 +164,13 @@ int clearEvent(generic_sm_t &sm, events_e evt, bool clearAll)
 {
     if (clearAll)
     {
-        sm.eventBitmap = 0;
+        sm.pendingEventBitmap = 0;
     }
     else
     {
-        sm.eventBitmap &= ~(1<<evt);
+        sm.pendingEventBitmap &= ~(1<<evt);
     }
+    std::cout << __func__ << ": " << sm.pendingEventBitmap << std::endl;
     return 0;
 }
 // ****************************
@@ -167,13 +179,13 @@ int initalizeStateMachine(generic_sm_t &sm)
 {
     sm.currentState = state0;
     sm.nextState = state0;
-    sm.eventBitmap = 0;
+    sm.pendingEventBitmap = 0;
+    sm.maskedEventBitmap = 0;
     return 0;
 }
 
 int processState(generic_sm_t &sm)
 {
-    (void) eventTable;
     // check if entry needed
     if (sm.currentState != sm.nextState)
     {
@@ -193,6 +205,7 @@ int processState(generic_sm_t &sm)
     }
     std::cout << "Current State: " << sm.currentState << std::endl;
     std::cout << "Next State: " << sm.nextState << std::endl;
-    std::cout << "Event bitmap: " << sm.eventBitmap << std::endl;
+    std::cout << "Pending event bitmap: " << sm.pendingEventBitmap << std::endl;
+    std::cout << "Masked event bitmap: " << sm.maskedEventBitmap << std::endl;
     return 0;
 }

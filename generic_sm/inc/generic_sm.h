@@ -27,7 +27,8 @@ typedef struct _generic_sm_t_
     /* data */
     states_e currentState;
     states_e nextState;
-    uint32_t eventBitmap;
+    uint32_t pendingEventBitmap;
+    uint32_t maskedEventBitmap;
 } generic_sm_t;
 
 // prototypes

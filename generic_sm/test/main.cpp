@@ -19,12 +19,12 @@ int main(void)
     int iterations = 5;
     while (testRunning)
     {
+
         retval = processState(sm);
         assert(retval == 0);
-        retval = clearEvent(sm, noEvent, true);
 
-        if (sm.currentState == state0) retval = handlerEventA(sm);
-        if (sm.currentState == state1) retval = handlerEventB(sm);
+        if (sm.currentState == state0 && sm.nextState == state0) retval = handlerEventA(sm);
+        if (sm.currentState == state1 && sm.nextState == state1) retval = handlerEventB(sm);
 
         if (iterations-- == 0) testRunning = false;
     }
