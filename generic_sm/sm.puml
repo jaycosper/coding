@@ -1,0 +1,15 @@
+@startuml
+
+state0 : State Zero
+state1 : State One
+state2 : State Two
+
+[*] --> state0 : initialization
+
+
+state0 -> state1 : event A
+state1 -> state0 : event A
+state1 -> state2 : event B
+state2 -> state0
+
+@enduml
