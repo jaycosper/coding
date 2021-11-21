@@ -30,8 +30,8 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=clang-toolchain.cmake ..
-          ninja
+          cmake ..
+          make
           ctest
 
       # Runs a set of commands using the runners shell
