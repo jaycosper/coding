@@ -27,11 +27,12 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Build Coding repo unit tests
-        run: mkdir build
-        run: cd build
-        run: cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=clang-toolchain.cmake ..
-        run: ninja
-        run: ctest
+        run: |
+          mkdir build
+          cd build
+          cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=clang-toolchain.cmake ..
+          ninja
+          ctest
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
