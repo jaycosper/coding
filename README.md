@@ -14,9 +14,10 @@ Most of these examples were built and tested using Ubuntu.
 ~$ cd build
 ~$ cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=clang-toolchain.cmake ..
 ~$ ninja
+~$ cp ../averager/test/input.txt averager/test/
 ~$ ctest
 ```
-The examples should build cleanly and all tests should pass.
+The examples should build cleanly and all tests should pass. The copy of the averager input data is needed to address the relative path.
 
 ## Descriptions
 Each folder contains a description of the example.
