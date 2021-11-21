@@ -136,7 +136,7 @@ constexpr state_table_t stateTable[max_states]
     // State        // entry        // current          // exit         // event
     {/* State0 */   &state0_entry,  &state0_process,    &state0_exit,   &generic_event },
     {/* State1 */   &state1_entry,  &state1_process,    &state1_exit,   &generic_event },
-    {/* State1 */   &state2_entry,  &state2_process,    &state2_exit,   &generic_event },
+    {/* State2 */   &state2_entry,  &state2_process,    &state2_exit,   &generic_event },
 };
 
 }
