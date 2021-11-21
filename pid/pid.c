@@ -61,6 +61,9 @@ void pidSetTunings(double Kp, double Ki, double Kd)
    pid_params.kd = Kd;
 }
 
+// would normally be in a header
+uint32_t halCallToBeFaked(uint32_t a, uint32_t b);
+
 double pidCompute(void)
 {
    /*How long since we last calculated*/
@@ -78,6 +81,9 @@ double pidCompute(void)
    /*Remember some variables for next time*/
    pid_params.lastErr = error;
    pid_params.lastTime = now;
+
+   uint32_t var = halCallToBeFaked(0x1, 0x2);
+   (void) var;
 
    return pid_params.Output;
 }

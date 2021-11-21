@@ -22,6 +22,7 @@ add_compile_options(
 # add each library's CMake file
 add_subdirectory( template )
 add_subdirectory( cutest )
+add_subdirectory( fff )
 add_subdirectory( fixedpoint )
 add_subdirectory( averager )
 add_subdirectory( assert )

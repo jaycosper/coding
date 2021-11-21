@@ -10,6 +10,8 @@ add_executable (test_${modulename}
 
 target_link_libraries (test_${modulename}
     LINK_PUBLIC ${modulename}
+    fff
+    assert
 )
 
 add_test(test_${modulename} test_${modulename})
