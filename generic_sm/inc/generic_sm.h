@@ -1,8 +1,5 @@
 /*
- * Lamda Averager
- * Implementation of a rolling averager using shifts.
- * Used in conjunction with fixed point numbers.
- *
+ * Generic State Machine
  */
 
 // enum
