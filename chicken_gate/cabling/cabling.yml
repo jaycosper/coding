@@ -1,0 +1,108 @@
+connectors:
+  X_mtr: &template_con
+    pinlabels: [VOUT, GND, VCC, OCC, EN, ENB, PWM2, PWM1, OCM, DIAG]
+    type: 0.1" Header
+    subtype: female
+    notes: motor driver # add notes
+  X_uc:
+    pinlabels: [NC, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, A0, A1, A2, A3, A4, A5, A6, A7, VCC, GND]
+    type: 0.1" Header
+    subtype: female
+    notes: microcontroller # add notes
+  X_joystick: &template_jysk
+    pinlabels: [GND, +5V, VRx, VRy, SW]
+    type: 0.1" Header
+    subtype: female
+    notes: joystick
+  X_pwr: &template_pwr
+    pinlabels: [VCC, GND]
+    type: 0.1" Header
+    subtype: male
+    notes: terminal block
+  X_sensor: &template_snr
+    pinlabels: [SNS, GND, VCC]
+    type: 0.1" Header
+    subtype: male
+    notes: light sensor
+  X_led: &template_simple
+    pinlabels: [ACTIVE, COMMON]
+    type: LED
+    color: YE # optional color
+  X_sw1:
+    <<: *template_simple
+    type: SW1
+    color: RD # optional color
+  X_sw2:
+    <<: *template_simple
+    type: SW2
+    color: GN # optional color
+
+cables:
+  W_mtr: &template_cbl
+    wirecount: 10
+    length: 0.3
+    gauge: 24 AWG # specify gauge in AWG directly
+    color_code: IEC # IEC 62 colors also supported
+    notes: This cable is a bit longer
+  W_joystick: &template_cbl_jysk
+    wirecount: 5
+    length: 0.1
+    gauge: 24 AWG # specify gauge in AWG directly
+    color_code: IEC # IEC 62 colors also supported
+    notes: joystick cable
+  W_pwr: &template_pwrc
+    wirecount: 2
+    length: 0.3
+    gauge: 24 AWG # specify gauge in AWG directly
+    colors: [RD, BK]
+    notes: Power cable
+  W_sensor: &template_sns
+    wirecount: 3
+    length: 0.3
+    gauge: 24 AWG # specify gauge in AWG directly
+    colors: [WH, VT, BU]
+    notes: light sensor cable
+  W_led: &template_single
+    wirecount: 2
+    length: 0.3
+    gauge: 24 AWG # specify gauge in AWG directly
+    colors: [YE, BK]
+    notes: led cable
+  W_sw1:
+    <<: *template_single
+    colors: [RD, BK]
+    notes: switch 1 cable
+  W_sw2:
+    <<: *template_single
+    colors: [GN, BK]
+    notes: switch 2 cable
+
+connections:
+  -
+    - X_mtr: [2, 3, 5, 6, 7, 8, 10]
+    - W_mtr: [2, 3, 5, 6, 7, 8, 10]
+    - X_uc: [22, 21, 11, 12, 5, 6, 10]
+  -
+    - X_sensor: [1-3]
+    - W_sensor: [1-3]
+    - X_uc: [13, 22, 21]
+  -
+    - X_joystick: [1-5]
+    - W_joystick: [1-5]
+    - X_uc: [22, 21, 16, 15, 14]
+  -
+    - X_uc: [4, 22]
+    - W_led: [1-2]
+    - X_led: [1-2]
+  -
+    - X_uc: [2, 22]
+    - W_sw1: [1-2]
+    - X_sw1: [1-2]
+  -
+    - X_uc: [3, 22]
+    - W_sw2: [1-2]
+    - X_sw2: [1-2]
+  -
+    - X_uc: [21-22]
+    - W_pwr: [1-2]
+    - X_pwr: [1-2]
