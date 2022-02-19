@@ -6,15 +6,18 @@
 constexpr uint8_t LIGHT_SENSOR_PIN = A0;
 constexpr uint8_t SW_OPEN_PIN = 2;
 constexpr uint8_t SW_CLOSED_PIN = 3;
-constexpr uint8_t MTR_PWM1_PIN = 5;
-constexpr uint8_t MTR_PWM2_PIN = 6;
+constexpr uint8_t MTR_PWM1_PIN = 6;
+constexpr uint8_t MTR_PWM2_PIN = 5;
 constexpr uint8_t MTR_EN_PIN = 11;
 constexpr uint8_t MTR_ENB_PIN = 12;
-constexpr uint8_t MTR_DIAG_PIN = 10;
-constexpr uint8_t MODE_LED_PIN = 4;
+constexpr uint8_t MTR_DIAG_PIN = 13;
 constexpr uint8_t MAN_SW_PIN = A1;
-constexpr uint8_t MAN_JOYX_PIN = A2;
-constexpr uint8_t MAN_JOYY_PIN = A3;
+constexpr uint8_t MAN_JOYX_PIN = A3;
+constexpr uint8_t MAN_JOYY_PIN = A2;
+
+// LEDs
+constexpr uint8_t FAULT_LED_PIN = 7;
+constexpr uint8_t MODE_LED_PIN = 8;
 
 typedef enum
 {
@@ -40,26 +43,26 @@ typedef struct motorState_s
 static motorState_t myMotorState;
 
 enum states_e {
-    stIDLE,
-    stOPENING,
-    stOPEN,
-    stCLOSING,
-    stCLOSED,
-    stFAULT,
-    max_states
+  stIDLE,
+  stOPENING,
+  stOPEN,
+  stCLOSING,
+  stCLOSED,
+  stFAULT,
+  max_states
 };
 
 typedef struct _coop_sm_s_
 {
-    states_e currentState;
-    bool swOpen;
-    bool swClosed;
-    bool dayTime;
-    uint32_t eventTime;
-    uint32_t faultTime;
-    bool lightEvent;
-    bool darkEvent;
-    bool manualMode;
+  states_e currentState;
+  bool swOpen;
+  bool swClosed;
+  bool dayTime;
+  uint32_t eventTime;
+  uint32_t faultTime;
+  bool lightEvent;
+  bool darkEvent;
+  bool manualMode;
 } coop_sm_t;
 
 static coop_sm_t sm;
@@ -128,10 +131,10 @@ void driveMotor(motorState_t &rMotorState, direction_e dir, int dutyCycle)
 {
   rMotorState.motor.en = HIGH;
   rMotorState.motor.enb = LOW;
-  int tpwm = static_cast<int>(dutyCycle*255/100);
+  int tpwm = static_cast<int>(dutyCycle * 255 / 100);
   rMotorState.dir = dir;
   rMotorState.motor.pwm1 = (rMotorState.dir == dirOpen) ? tpwm : 0;
-  rMotorState.motor.pwm2 = (rMotorState.dir == dirOpen) ? 0: tpwm;
+  rMotorState.motor.pwm2 = (rMotorState.dir == dirOpen) ? 0 : tpwm;
   setMotor(rMotorState.motor);
 }
 
@@ -257,18 +260,18 @@ void checkForManualMode(coop_sm_t &sm)
 
 void manualControl(coop_sm_t &sm)
 {
-    // manual mode -- use joystick to move motor
-    int manJX = analogRead(MAN_JOYX_PIN);
-    int manJY = analogRead(MAN_JOYY_PIN);
-    if (manJX < 100) driveMotor(myMotorState, dirOpen, 75);
-    else if (manJX > 923) driveMotor(myMotorState, dirClose, 75);
-    else disableMotor(myMotorState);
+  // manual mode -- use joystick to move motor
+  int manJX = analogRead(MAN_JOYX_PIN);
+  int manJY = analogRead(MAN_JOYY_PIN);
+  if (manJX < 100) driveMotor(myMotorState, dirOpen, 75);
+  else if (manJX > 923) driveMotor(myMotorState, dirClose, 75);
+  else disableMotor(myMotorState);
 }
 
 uint32_t processStateMachine(coop_sm_t &sm)
 {
   static bool faultLed = HIGH;
-  switch(sm.currentState)
+  switch (sm.currentState)
   {
     case stIDLE:
       disableMotor(myMotorState);
@@ -331,10 +334,10 @@ uint32_t processStateMachine(coop_sm_t &sm)
     case stFAULT:
       // flash mode LED
       faultLed = !faultLed;
-      digitalWrite(MODE_LED_PIN, faultLed);
+      digitalWrite(FAULT_LED_PIN, faultLed);
       break;
     default:
-      sm.currentState= stIDLE;
+      sm.currentState = stIDLE;
       break;
   }
 
@@ -404,6 +407,7 @@ void setup() {
   pinMode(MTR_PWM1_PIN, OUTPUT);
   pinMode(MTR_PWM2_PIN, OUTPUT);
   pinMode(MODE_LED_PIN, OUTPUT);
+  pinMode(FAULT_LED_PIN, OUTPUT);
 
   initSystem();
   disableMotor(myMotorState);
