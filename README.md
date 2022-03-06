@@ -62,3 +62,47 @@ The CMake build process allows for sharing of libraries without full exposure of
 * buffer manager
 * CPP learnings
 * FPGA
+
+## VSCode VIM Bindings
+Configured in settings.json
+```json
+{
+   "vim.insertModeKeyBindingsNonRecursive": [
+        {
+        "before": ["j", "j"],
+        "after": ["<ESC>"]
+        }
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+        "before": [";"],
+        "after": [":"]
+        },
+        {
+        "before": ["leader", "w"],
+        "after": [],
+        "commands": [{
+            "command": "editor.action.trimTrailingWhitespace",
+            "args": []
+            }]
+        }
+    ],
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "editor.lineNumbers": "relative",
+    "editor.renderWhitespace": "all",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "workbench.editor.untitled.hint": "hidden",
+    "terminal.integrated.tabs.enabled": true,
+    "explorer.confirmDelete": false,
+    "extensions.ignoreRecommendations": true,
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    }
+}
+```
